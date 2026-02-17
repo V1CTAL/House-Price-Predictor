@@ -33,7 +33,7 @@ class HousingPredictor:
         if isinstance(model_path, str):
             model_path = Path(model_path)
 
-        self.model = joblib.load(model_path)
+        self.model = joblib.load(str(model_path))
 
     def predict_price(self, features: Dict[str, Any]) -> float:
         """

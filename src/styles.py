@@ -39,12 +39,12 @@ CUSTOM_CSS = """
 """
 
 
-def apply_custom_styles():
+def apply_custom_styles() -> None:
     """Apply custom CSS styling to the Streamlit app"""
     st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
 
-def configure_page():
+def configure_page() -> None:
     """Configure Streamlit page settings
     """
     st.set_page_config(

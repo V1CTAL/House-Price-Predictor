@@ -8,10 +8,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns  # type: ignore
 from typing import Dict, Any, Optional
+from database import HousingPriceDB
+from predictor import HousingPredictor
 from visualizations import *
 
 
-def render_home_page(data: pd.DataFrame):
+def render_home_page(data: pd.DataFrame) -> None:
     """Render the home page"""
     st.markdown('<h1 class="main-header">🏠 California Housing Price Predictor</h1>',
                 unsafe_allow_html=True)
@@ -61,8 +63,13 @@ def render_home_page(data: pd.DataFrame):
     st.pyplot(fig)
 
 
-def render_price_predictor_page(model, db, data):
-    """Render the price predictor page"""
+def render_price_predictor_page(model: 'HousingPredictor',
+                                db: 'HousingPriceDB | None',
+                                data: pd.DataFrame) -> None:
+    """
+    Render the price predictor page,
+    allowing users to input property details and get price predictions.
+    """
     st.markdown('<h1 class="main-header">💰 Predict House Price</h1>',
                 unsafe_allow_html=True)
 
@@ -263,8 +270,10 @@ def render_price_predictor_page(model, db, data):
                 st.pyplot(fig2)
 
 
-def render_data_explorer_page(data: pd.DataFrame):
-    """Render the data explorer page"""
+def render_data_explorer_page(data: pd.DataFrame) -> None:
+    """Render the data explorer page,
+       allowing users to explore dataset statistics and visualizations.
+    """
     st.markdown('<h1 class="main-header">📊 Explore the Data</h1>',
                 unsafe_allow_html=True)
 
@@ -307,8 +316,10 @@ def render_data_explorer_page(data: pd.DataFrame):
         )
 
 
-def render_prediction_history_page(db):
-    """Render the prediction history page"""
+def render_prediction_history_page(db: 'HousingPriceDB | None') -> None:
+    """Render the prediction history page,
+       showing all saved predictions from the database.
+    """
     st.markdown('<h1 class="main-header">📜 Prediction History</h1>',
                 unsafe_allow_html=True)
 
@@ -352,7 +363,7 @@ def render_prediction_history_page(db):
             st.error(f'Error loading prediction history: {e}')
 
 
-def render_model_insights_page(model):
+def render_model_insights_page(model: 'HousingPredictor') -> None:
     """Render the model insights page"""
     st.markdown('<h1 class="main-header">🔬 Model Insights</h1>',
                 unsafe_allow_html=True)
@@ -395,9 +406,9 @@ def render_model_insights_page(model):
                   help='Model performs well on test data')
 
 
-def render_about_page():
+def render_about_page() -> None:
     """Render the about page"""
-    st.markdown('<h1 class"main-header">ℹ️ About This Project</h1>',
+    st.markdown('<h1 class="main-header">ℹ️ About This Project</h1>',
                 unsafe_allow_html=True)
 
     st.markdown("""

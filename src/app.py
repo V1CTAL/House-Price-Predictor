@@ -33,25 +33,36 @@ configure_page()
 # Apply custom CSS
 apply_custom_styles()
 
-# Define paths
-MODEL_PATH = Path('./models/housing_price_model.pkl')
-DATA_PATH = Path('./data/housing_cleaned.csv')
+# Get the absolute path to the directory containing the current script
+SCRIPT_DIR = Path(__file__).resolve().parent
+
+# Navigate up one level to the project root
+PROJECT_ROOT = SCRIPT_DIR.parent
+
+# Define paths relative to the project root
+MODEL_PATH = PROJECT_ROOT / 'models' / 'housing_price_model.pkl'
+DATA_PATH = PROJECT_ROOT / 'data' / 'housing_cleaned.csv'
+
+# For verification
+print(f'Resolved MODEL_PATH: {MODEL_PATH}')
+print(f'Resolved DATA_PATH: {DATA_PATH}')
 
 
 @st.cache_resource
-def load_model():
+def load_model() -> HousingPredictor:
     """Load the trained housing price prediction model from disk"""
     return HousingPredictor(MODEL_PATH)
 
 
 @st.cache_resource
-def get_database():
+def get_database() -> HousingPriceDB | None:
     """Initialize database connection"""
     try:
         db = HousingPriceDB(
             dbname=os.getenv('DB_NAME', 'housing_db'),
             user=os.getenv('DB_USER', 'housing_user'),
-            password=os.getenv('DB_PASSWORD'),
+            # In production, use a more secure method to handle passwords
+            password=os.getenv('DB_PASSWORD', 'password'),
             host=os.getenv('DB_HOST', 'localhost'),
             port=int(os.getenv('DB_PORT', 5432))
         )
@@ -63,15 +74,15 @@ def get_database():
 
 
 @st.cache_resource
-def load_data():
+def load_data() -> pd.DataFrame:
     """Load the cleaned housing dataset from CSV file"""
     return pd.read_csv(DATA_PATH)
 
 
 # Load Resources
-model = load_model()
-db = get_database()
-data = load_data()
+model: HousingPredictor = load_model()
+db: HousingPriceDB | None = get_database()
+data: pd.DataFrame = load_data()
 
 # Map page names to functions and their required arguments
 PAGES = {
@@ -93,4 +104,4 @@ render_status = st.sidebar.success if db else st.sidebar.warning
 render_status(status_msg)
 
 # Execute the selected page
-PAGES[selection]()
+PAGES[selection]()  # Call the function associated with the selected page
