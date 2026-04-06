@@ -297,7 +297,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) f
 
 **Victal**
 - GitHub: [@V1CTAL](https://github.com/V1CTAL)
-- LinkedIn: [Your LinkedIn](your-linkedin-url)
+- LinkedIn: (https://www.linkedin.com/in/marcelo-victal/)
 
 ## Acknowledgments
 
